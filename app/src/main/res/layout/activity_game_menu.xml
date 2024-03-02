@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pokemon_roud_background2"
+    tools:context=".Activitys.GameMenu">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:rowCount="6"
+        android:columnCount="1">
+        <RelativeLayout
+            android:layout_width="350dp"
+            android:layout_height="120dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/pokemon_logo"
+            >
+
+
+        </RelativeLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="Choose Speed:"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+
+            >
+        </com.google.android.material.textview.MaterialTextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/game_menu_btn_Slow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Slow"
+                android:background="@drawable/rounded_button_background"
+                android:textSize="20dp"
+                android:elevation="4dp"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false">
+
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/game_menu_btn_Fast"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fast"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/rounded_button_background"
+                android:textSize="20dp"
+                android:elevation="4dp"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false">
+            </androidx.appcompat.widget.AppCompatButton>
+
+        </LinearLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:text="Choose Play Style:"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+
+            >
+        </com.google.android.material.textview.MaterialTextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/game_menu_btn_Sensor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sensor"
+                android:background="@drawable/rounded_button_background"
+                android:textSize="20dp"
+                android:elevation="4dp"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false"
+                >
+
+            </androidx.appcompat.widget.AppCompatButton>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/game_menu_btn_Arrows"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Arrows"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/rounded_button_background"
+                android:textSize="20dp"
+                android:elevation="4dp"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false">
+            </androidx.appcompat.widget.AppCompatButton>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/game_menu_btn_play_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Play Game"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/rounded_button_background"
+                android:textSize="20dp"
+                android:elevation="4dp"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false"
+                android:paddingHorizontal="16dp">
+            </androidx.appcompat.widget.AppCompatButton>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="24dp">
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/game_menu_btn_scoreboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Score Board"
+                android:layout_marginLeft="16dp"
+                android:background="@drawable/rounded_button_background"
+                android:textSize="20dp"
+                android:elevation="4dp"
+                android:textColor="@android:color/black"
+                android:textAllCaps="false"
+                android:paddingHorizontal="16dp">
+            </androidx.appcompat.widget.AppCompatButton>
+
+        </LinearLayout>
+    </GridLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
