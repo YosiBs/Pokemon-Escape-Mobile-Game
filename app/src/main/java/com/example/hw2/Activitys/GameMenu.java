@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import com.example.hw2.R;
+import com.example.hw2.Utilities.BackgroundSound;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ public class GameMenu extends AppCompatActivity {
     private AppCompatButton game_menu_btn_scoreboard;
     private boolean speed;
     private boolean playStyle;
+    private BackgroundSound backgroundSound;
 
 
     @Override
@@ -37,6 +39,19 @@ public class GameMenu extends AppCompatActivity {
         game_menu_btn_Arrows.setOnClickListener(v -> {playStyleBtnClicked(false);});
         game_menu_btn_play_game.setOnClickListener(v -> {startGameActivity();});
         game_menu_btn_scoreboard.setOnClickListener(v -> {startScoreBoardActivity();});
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        backgroundSound.stopSound();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        backgroundSound = new BackgroundSound(this);
+        backgroundSound.playSound(0);
     }
 
     private void playStyleBtnClicked(boolean b) {

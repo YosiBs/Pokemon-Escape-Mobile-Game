@@ -24,9 +24,16 @@ public class BackgroundSound {
 
     }
 
-    public void playSound(){
+    public void playSound(int stage){
         executor.execute(() -> {
-            mp = MediaPlayer.create(context, R.raw.pokemon_battle_start_background_music);
+            switch(stage){
+                case 0:
+                    mp = MediaPlayer.create(context, R.raw.menu_background_sound);
+                    break;
+                case 1:
+                    mp = MediaPlayer.create(context, R.raw.pokemon_battle_start_background_music);
+                    break;
+            }
             mp.setLooping(true);
             mp.setVolume(1.0f, 1.0f);
             mp.start();

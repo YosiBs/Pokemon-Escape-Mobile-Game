@@ -502,7 +502,7 @@
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/main_edit_text"
+                android:id="@+id/main_ET_player_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"

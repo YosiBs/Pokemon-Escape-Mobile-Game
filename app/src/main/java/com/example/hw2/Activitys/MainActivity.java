@@ -1,6 +1,7 @@
 package com.example.hw2.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.cardview.widget.CardView;
 
 import android.content.Context;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private MaterialTextView main_text_score;
     private CardView main_cardview_gameover;
     private MaterialTextView main_card_lbl_score;
+    private AppCompatEditText main_ET_player_name;
     private boolean isGameRunning = true;
     private boolean isGameOver = false;
     // Sensors:
@@ -62,8 +64,10 @@ public class MainActivity extends AppCompatActivity {
 
     // Sounds:
     private BackgroundSound backgroundSound;
-    private MediaPlayer mpGetCoinSound;
+    private MediaPlayer[] mpCoinSound;
     private MediaPlayer mpGameOverSound;
+    private MediaPlayer mpStepRightSound;
+    private MediaPlayer mpStepLeftSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         gameMat = getAllRelativeLayouts();
         main_btn_left.setOnClickListener(v -> moveLeft());
         main_btn_right.setOnClickListener(v -> moveRight());
+        initSounds();
         startGameLoop();
     }
 
@@ -83,8 +88,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         isGameRunning = false;
-        Log.d("ddd", "Before stop Sound");
 
+        Log.d("ddd", "Before stop Sound");
         backgroundSound.stopSound();
         Log.d("ddd", "After stop Sound");
 
@@ -98,10 +103,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        Log.d("ddd", "Before Sound");
         backgroundSound = new BackgroundSound(this);
-        backgroundSound.playSound();
-        Log.d("ddd", "After Sound");
+        backgroundSound.playSound(1);
 
         if(!isGameRunning){
             isGameRunning = true;
@@ -112,16 +115,18 @@ public class MainActivity extends AppCompatActivity {
             if(isGameOver){
                 return;
             }
-
             startGameLoop();
         }
     }
 
     private void initSounds(){
-        //mpGetCoinSound = MediaPlayer.create(MainActivity.this, R.raw.punch);
-        //mpGameOverSound = MediaPlayer.create(MainActivity.this, R.raw.punch);
-
-
+        mpCoinSound = new MediaPlayer[] {
+            MediaPlayer.create(this, R.raw.pikachu_get_coin_1),
+                MediaPlayer.create(this, R.raw.pikachu_get_coin_2)
+        };
+        mpGameOverSound = MediaPlayer.create(this, R.raw.pikachu_sad_game_over);
+        mpStepRightSound = MediaPlayer.create(this, R.raw.movementright);
+        mpStepLeftSound = MediaPlayer.create(this, R.raw.movementleft);
     }
     private void moveRight() {
         int currLane = gm.getMainCharacter().getPosX();
@@ -129,12 +134,10 @@ public class MainActivity extends AppCompatActivity {
         if(newLane < gm.getNumberOfCols()){
             //Switch lanes
             switchLaneHandler(currLane, newLane);
-
+            mpStepRightSound.start();
             int collidedObsIndex = gm.isCollisionAccured();
             if(collidedObsIndex != -1){
-                Log.d("bbb", "from moveRigt: lifes : " + gm.getNumberOfLifes());
                 collisionUI(collidedObsIndex);
-
             }
         }
     }
@@ -144,12 +147,11 @@ public class MainActivity extends AppCompatActivity {
         if (newLane >= 0) {
             //Switch lanes
             switchLaneHandler(currLane, newLane);
+            mpStepLeftSound.start();
             int collidedObsIndex = gm.isCollisionAccured();
             if(collidedObsIndex != -1){
-                Log.d("bbb", "from moveLeft: lifes : " + gm.getNumberOfLifes());
                 collisionUI(collidedObsIndex);
             }
-
         }
     }
 
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
         main_text_score = findViewById(R.id.main_text_score);
         main_cardview_gameover = findViewById(R.id.main_cardview_gameover);
         main_card_lbl_score = findViewById(R.id.main_card_lbl_score);
-
+        main_ET_player_name = findViewById(R.id.main_ET_player_name);
 
     }
 
@@ -352,8 +354,13 @@ public class MainActivity extends AppCompatActivity {
             Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             receivePoints();
             removeCoin(currObstacle);
-            // TODO: makeSound();
+            makeCoinCollectingSound();
         }
+    }
+
+    private void makeCoinCollectingSound() {
+        int random = gm.generateRandomNumber(2);
+        mpCoinSound[random].start();
     }
 
 
@@ -385,6 +392,8 @@ public class MainActivity extends AppCompatActivity {
         isGameRunning = false;
         isGameOver = true;
         showEndGameCard(true);
+        mpGameOverSound.start();
+
 
         main_btn_right.setVisibility(View.INVISIBLE);
         main_btn_left.setVisibility(View.INVISIBLE);
@@ -412,6 +421,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void saveScore(){
+        // TODO:
+        // 1. save the score to the game manager
+        // in game manager create a sorted array and show only the top 10 scores and players
+
+        if(main_ET_player_name.length() == 0){
+            createToast("Please Add Your Name");
+        }else{
+
+        }
+
+    }
     public void goToScoreBoardActivity(){
         // TODO:
     }
