@@ -3,13 +3,9 @@ package com.example.hw2.Models;
 public class Player {
 
     private String name = "";
-    private int score;
-    private double lat;
-    private double lng;
-
-    public Player(){
-
-    }
+    private int score = 0;
+    private double lat = 0;
+    private double lng = 0;
 
     public String getName() {
         return name;
@@ -45,5 +41,15 @@ public class Player {
     public Player setLng(double lng) {
         this.lng = lng;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Player{" +
+                "name='" + name + '\'' +
+                ", score=" + score +
+                ", lat=" + lat +
+                ", lng=" + lng +
+                '}';
     }
 }

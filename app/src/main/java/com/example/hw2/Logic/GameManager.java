@@ -17,7 +17,7 @@ public class GameManager {
     private int coinValue = 10;
     private MainCharacter mainCharacter;
     private ArrayList<Obstacle> obstacleList;
-    private final int MAX_OBSTACLES = 3;
+    private final int MAX_OBSTACLES = 4;
 
     public int getCoinValue() {
         return coinValue;

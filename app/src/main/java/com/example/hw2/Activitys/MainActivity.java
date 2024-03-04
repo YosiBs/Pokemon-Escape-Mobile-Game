@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     // Sensors:
     private SensorMovement stepSensorsManager;
     private SensorMovement speedSensorsManager;
+    private final int ODOMETER_VALUE = 1;
 
     // Sounds:
     private BackgroundSound backgroundSound;
@@ -268,6 +269,7 @@ public class MainActivity extends AppCompatActivity {
                 if(!isGameRunning){
                     return;
                 }
+                odometer();
                 ObstacleViewMovement(); // Move the obstacle one line below each time
                 handler.postDelayed(this, loopInterval); // Schedule the next iteration
                 int randomDisplay = gm.generateRandomNumber(5);
@@ -276,6 +278,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }, loopInterval); // Initial delay
+    }
+    private void odometer(){
+        gm.setScore(gm.getScore() + ODOMETER_VALUE);
+        main_text_score.setText(gm.getScore() + "");
+
     }
 
     private void createNewObstacle() {
@@ -342,7 +349,7 @@ public class MainActivity extends AppCompatActivity {
     private void collisionUI(int i){
 
         Obstacle currObstacle = gm.getObstacleList().get(i);
-        if(currObstacle.isDoingDamage()){
+        if(currObstacle.isDoingDamage()){ // Crash
             Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             loseALife();
             vibrationEffect();
@@ -350,7 +357,7 @@ public class MainActivity extends AppCompatActivity {
             if(gm.getNumberOfLifes() == 0){
                 gameOver();
             }
-        }else{
+        }else{ // COIN COLLECT
             Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             receivePoints();
             removeCoin(currObstacle);

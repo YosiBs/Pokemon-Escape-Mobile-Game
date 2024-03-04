@@ -18,6 +18,8 @@ public class SensorMovement {
     private SensorEventListener movementSensorEventListener;
     private SensorEventListener speedSensorEventListener;
     private long timeStamp = 0l;
+    private final float X_LIMIT = 4.0f;
+    private final float Y_LIMIT = 9.0f;
     private CallBack_CharacterMovement callBack_CharacterMovement;
     private CallBack_GameSpeed callBack_gameSpeed;
 
@@ -64,13 +66,12 @@ public class SensorMovement {
     }
 
     private void calculateSpeed(float y) {
-        if(y > 6.0){
-            if(callBack_gameSpeed != null){
+        if (y > Y_LIMIT) {
+            if (callBack_gameSpeed != null) {
                 callBack_gameSpeed.GameMoveFaster();
             }
-        }
-        if(y < 6.0){
-            if(callBack_gameSpeed != null){
+        } else {
+            if (callBack_gameSpeed != null) {
                 callBack_gameSpeed.GameMoveSlower();
             }
         }
@@ -80,12 +81,12 @@ public class SensorMovement {
     private void calculateStep(float x) {
         if(System.currentTimeMillis() - timeStamp > 500){
             timeStamp = System.currentTimeMillis();
-            if(x > 4.0){
+            if(x > X_LIMIT){
                 if(callBack_CharacterMovement != null){
                     callBack_CharacterMovement.CharacterMoveLeft();
                 }
             }
-            if(x < -4.0){
+            if(x < -X_LIMIT){
                 if(callBack_CharacterMovement != null){
                     callBack_CharacterMovement.CharacterMoveRight();
                 }
