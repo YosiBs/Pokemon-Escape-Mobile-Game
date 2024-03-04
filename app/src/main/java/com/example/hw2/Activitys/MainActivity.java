@@ -3,12 +3,15 @@ package com.example.hw2.Activitys;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorPrivacyManager;
+import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.View;
 import android.widget.GridLayout;
@@ -20,6 +23,7 @@ import com.example.hw2.Interfaces.CallBack_GameSpeed;
 import com.example.hw2.Logic.GameManager;
 import com.example.hw2.Models.Obstacle;
 import com.example.hw2.R;
+import com.example.hw2.Utilities.BackgroundSound;
 import com.example.hw2.Utilities.SensorMovement;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -33,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private final int SLOW_VALUE = 750;
     private final int FAST_VALUE = 350;
     private final int FASTER_VALUE = 250;
+    private final int VIBRATIONT_TIME = 300;
 
     private boolean speed = false;
-    private boolean playStyle = false;
+    private boolean useStepSensor = false;
     private MaterialTextView main_MTV_chosen_speed;
     private GameManager gm;
     private FloatingActionButton main_btn_left;
@@ -50,9 +55,15 @@ public class MainActivity extends AppCompatActivity {
     private CardView main_cardview_gameover;
     private MaterialTextView main_card_lbl_score;
     private boolean isGameRunning = true;
+    private boolean isGameOver = false;
+    // Sensors:
     private SensorMovement stepSensorsManager;
     private SensorMovement speedSensorsManager;
 
+    // Sounds:
+    private BackgroundSound backgroundSound;
+    private MediaPlayer mpGetCoinSound;
+    private MediaPlayer mpGameOverSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,8 +83,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         isGameRunning = false;
+        Log.d("ddd", "Before stop Sound");
+
+        backgroundSound.stopSound();
+        Log.d("ddd", "After stop Sound");
+
         speedSensorsManager.stopSpeedSensor();
-        if(playStyle){
+        if(useStepSensor){
             stepSensorsManager.stopStepSensor();
         }
     }
@@ -81,16 +97,32 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Log.d("ddd", "Before Sound");
+        backgroundSound = new BackgroundSound(this);
+        backgroundSound.playSound();
+        Log.d("ddd", "After Sound");
+
         if(!isGameRunning){
             isGameRunning = true;
             speedSensorsManager.startSpeedSensor();
-            if(playStyle){
+            if(useStepSensor){
                 stepSensorsManager.startStepSensor();
             }
+            if(isGameOver){
+                return;
+            }
+
             startGameLoop();
         }
     }
 
+    private void initSounds(){
+        //mpGetCoinSound = MediaPlayer.create(MainActivity.this, R.raw.punch);
+        //mpGameOverSound = MediaPlayer.create(MainActivity.this, R.raw.punch);
+
+
+    }
     private void moveRight() {
         int currLane = gm.getMainCharacter().getPosX();
         int newLane = currLane + 1;
@@ -159,19 +191,19 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject gameSetupValues = new JSONObject(jsonString);
                 // Get data from the JSON object
                 this.speed = gameSetupValues.getBoolean("speed");
-                this.playStyle = gameSetupValues.getBoolean("playStyle");
+                this.useStepSensor = gameSetupValues.getBoolean("playStyle");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("ccc", speed + " " + playStyle);
+        Log.d("ccc", speed + " " + useStepSensor);
         loopInterval = speed ? FAST_VALUE : SLOW_VALUE;
 
         //Sensor to control the speed of the obstacle coming down:
         activateSpeedSensors();
 
 
-        if(playStyle){ //Activate Sensors if the user chose this option:
+        if(useStepSensor){ //Activate Sensors if the user chose this option:
             main_btn_right.setVisibility(View.INVISIBLE);
             main_btn_left.setVisibility(View.INVISIBLE);
             activateMovementSensors();
@@ -311,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
         if(currObstacle.isDoingDamage()){
             Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             loseALife();
-            //doVibration();
+            vibrationEffect();
             createToast("Oops");
             if(gm.getNumberOfLifes() == 0){
                 gameOver();
@@ -320,7 +352,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             receivePoints();
             removeCoin(currObstacle);
-            //makeSound();
+            // TODO: makeSound();
         }
     }
 
@@ -351,6 +383,7 @@ public class MainActivity extends AppCompatActivity {
     private void gameOver() {
         Log.d("bbb", "GAME OVER");
         isGameRunning = false;
+        isGameOver = true;
         showEndGameCard(true);
 
         main_btn_right.setVisibility(View.INVISIBLE);
@@ -368,5 +401,18 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void vibrationEffect() {
+        Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        // Vibrate for 500 milliseconds
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            v.vibrate(VibrationEffect.createOneShot(VIBRATIONT_TIME, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            //deprecated in API 26
+            v.vibrate(VIBRATIONT_TIME);
+        }
+    }
 
+    public void goToScoreBoardActivity(){
+        // TODO:
+    }
 }

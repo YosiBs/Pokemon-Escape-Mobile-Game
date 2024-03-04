@@ -10,6 +10,7 @@ public class GameManager {
 
     private int numberOfLifes;
     private int bumpCounter = 0;
+    private final int LIFES_PER_GAME = 3;
     private final int NUMBER_OF_ROWS = 7;
     private final int NUMBER_OF_COLS = 5;
     private int score = 0;
@@ -27,7 +28,7 @@ public class GameManager {
     }
 
     public GameManager(){
-        this.numberOfLifes = 3;
+        this.numberOfLifes = LIFES_PER_GAME;
         mainCharacter = new MainCharacter();
         obstacleList = new ArrayList<>();
     }
@@ -81,6 +82,9 @@ public class GameManager {
         this.obstacleList = obstacleList;
     }
 
+    public int getLifesPerGame(){
+        return LIFES_PER_GAME;
+    }
 
     public int isCollisionAccured(){
         for(Obstacle obs : obstacleList){
