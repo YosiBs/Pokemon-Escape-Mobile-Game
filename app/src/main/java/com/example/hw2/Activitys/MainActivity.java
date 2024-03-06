@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean speed = false;
     private boolean useStepSensor = false;
-    private MaterialTextView main_MTV_chosen_speed;
+    //private MaterialTextView main_MTV_chosen_speed;
     private GameManager gm;
     private FloatingActionButton main_btn_left;
     private FloatingActionButton main_btn_right;
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findViews() {
-        main_MTV_chosen_speed = findViewById(R.id.main_MTV_chosen_speed);
+        //main_MTV_chosen_speed = findViewById(R.id.main_MTV_chosen_speed);
         main_btn_left = findViewById(R.id.main_btn_left);
         main_btn_right = findViewById(R.id.main_btn_right);
         main_grid = findViewById(R.id.main_grid);
@@ -350,8 +350,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
     private void ObstacleViewMovement() {
         for(Obstacle obs : gm.getObstacleList()){
             int nextRow = obs.getPosY() + 1;
@@ -374,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
                 gameOver();
             }
         }else{ // COIN COLLECT
-            receivePoints();
+            receiveCoinPoints();
             removeCoin(currObstacle);
             CoinCollectSound();
         }
@@ -404,7 +402,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void receivePoints() {
+    private void receiveCoinPoints() {
         gm.setScore(gm.getScore() + gm.getCoinValue());
         main_text_score.setText(gm.getScore() + "");
     }
@@ -438,46 +436,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void savePlayer(){
-        Log.d("bbb", "10");
-
+    public boolean savePlayer(){
         if(main_ET_player_name.length() == 0){
-            Log.d("bbb", "11");
             createToast("Please Add Name");
+            return false;
         }else{
             Player player = new Player().
                     setName(main_ET_player_name.getText().toString())
                     .setScore(gm.getScore());
-            //add lat lon
-            Log.d("bbb", "1");
+            //TODO: add lat lon
             PlayerList.getInstance().addPlayer(player);
-            Log.d("bbb", "2");
             PlayerList.getInstance().sortByScore();
-            Log.d("bbb", "3");
+            return true;
         }
     }
 
     public Intent savePlayerListToJson(){
         Gson gson = new Gson();
-        Log.d("bbb", "12");
         String playerListJson = gson.toJson(PlayerList.getInstance().getPlayerList());
-        Log.d("bbb", "13");
-
         Intent intent = new Intent(this, ScoreBoardActivity.class);
-        Log.d("bbb", "14");
         intent.putExtra("playerListJson", playerListJson);
-        Log.d("bbb", "15");
         return intent;
     }
 
     public void startScoreBoardActivity(){
-        savePlayer();
-        Log.d("bbb", "8");
-        Intent intent = savePlayerListToJson();
-        Log.d("bbb", "9");
+        if(savePlayer()){
+            Intent intent = savePlayerListToJson();
+            Log.d("rrr", PlayerList.getInstance().toString());
 
-        startActivity(intent);
-
-        finish();
+            startActivity(intent);
+            finish();
+        }
     }
 }

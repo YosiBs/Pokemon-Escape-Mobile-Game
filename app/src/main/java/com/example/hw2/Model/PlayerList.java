@@ -22,11 +22,10 @@ public class PlayerList {
 
     public PlayerList() {
 
-        Log.d("bbb", "15");
         this.playerList = loadFromSharedPreferences();
-        Log.d("bbb", "7");
-        if(playerList == null)
+        if(playerList == null) {
             this.playerList = new ArrayList<Player>();
+        }
     }
 
     public ArrayList<Player> getPlayerList() {
@@ -35,8 +34,6 @@ public class PlayerList {
     public static PlayerList getInstance() {
         if (instance == null)
             instance = new PlayerList();
-        Log.d("bbb", "6");
-
         return instance;
     }
 
@@ -55,17 +52,16 @@ public class PlayerList {
     private void saveToSharedPreferences() {
         Gson gson = new Gson();
         String playerListJson = gson.toJson(this.playerList);
+        Log.d("rrr", playerListJson);
+
         SharedPreferencesManager.getInstance().putString(PLAYER_LIST, playerListJson);
     }
 
     public ArrayList<Player> loadFromSharedPreferences(){
-        Log.d("bbb", "16");
-
-        String playersJson = SharedPreferencesManager.getInstance().getString("all_players", "");
-        Log.d("bbb", "17");
+        String playersJson = SharedPreferencesManager.getInstance().getString(PLAYER_LIST, "");
+        Log.d("rrr", playersJson);
         Gson gson = new Gson();
         Type type = new TypeToken<ArrayList<Player>>(){}.getType();
-        Log.d("bbb", "18");
         return gson.fromJson(playersJson, type);
     }
 

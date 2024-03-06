@@ -507,8 +507,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:hint="Enter Your Name"
-                android:textSize="12sp"
-                android:textColor="@color/button_menu_color"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 android:layout_gravity="center_horizontal"
                 android:layout_centerHorizontal="true"/>
 

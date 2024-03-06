@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/yellow_400_Dark"
+    tools:context=".View.FragmentScore">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/fragment_BTN_score"
+        android:layout_width="200dp"
+        android:layout_height="120dp"
+        android:text=""
+        android:background="@drawable/pokemon_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        >
+
+    </androidx.appcompat.widget.AppCompatButton>
+
+
+</RelativeLayout>

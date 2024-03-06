@@ -7,12 +7,18 @@ import androidx.core.content.ContextCompat;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 
+import com.example.hw2.Model.Player;
+import com.example.hw2.Model.PlayerList;
 import com.example.hw2.R;
 import com.example.hw2.Utilities.BackgroundSound;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class GameMenu extends AppCompatActivity {
 
@@ -86,33 +92,30 @@ public class GameMenu extends AppCompatActivity {
     }
 
     private void startScoreBoardActivity() {
+        ArrayList<Player> playerList = PlayerList.getInstance().getPlayerList();
+        Gson gson = new Gson();
+        String playerListJson = gson.toJson(playerList);
         Intent intent = new Intent(this, ScoreBoardActivity.class);
+        intent.putExtra("playerListJson", playerListJson);
         startActivity(intent);
         finish();
     }
 
     private void startGameActivity() {
-        //Create a JSON Object
         JSONObject gameSetupValues = new JSONObject();
         try{
-            //Put Data into the JSON object
             gameSetupValues.put("speed", speed);
             gameSetupValues.put("playStyle", playStyle);
             //gameSetupValues.put("lat", lat);
             //gameSetupValues.put("lon", lon);
-
-
         }catch (JSONException e) {
             e.printStackTrace();
         }
-
         //Create an Intent to start Activity2
         String jsonString = gameSetupValues.toString();
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra("jsonString", jsonString);
         startActivity(intent);
-
-
     }
 
     private void findViews(){
