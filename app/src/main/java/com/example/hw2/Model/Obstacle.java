@@ -1,4 +1,4 @@
-package com.example.hw2.Models;
+package com.example.hw2.Model;
 
 import com.google.android.material.imageview.ShapeableImageView;
 

@@ -1,7 +1,7 @@
 package com.example.hw2.Logic;
 
-import com.example.hw2.Models.MainCharacter;
-import com.example.hw2.Models.Obstacle;
+import com.example.hw2.Model.MainCharacter;
+import com.example.hw2.Model.Obstacle;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -17,7 +17,11 @@ public class GameManager {
     private int coinValue = 10;
     private MainCharacter mainCharacter;
     private ArrayList<Obstacle> obstacleList;
-    private final int MAX_OBSTACLES = 4;
+    private final int MAX_OBSTACLES = 10;
+
+
+
+
 
     public int getCoinValue() {
         return coinValue;
@@ -67,7 +71,6 @@ public class GameManager {
 
     public void setNumberOfLifes(int numberOfLifes) {
         this.numberOfLifes = numberOfLifes;
-
     }
 
     public void setBumpCounter(int bumpCounter) {

@@ -22,9 +22,15 @@ public class GameMenu extends AppCompatActivity {
     private AppCompatButton game_menu_btn_Sensor;
     private AppCompatButton game_menu_btn_Arrows;
     private AppCompatButton game_menu_btn_scoreboard;
+
     private boolean speed;
     private boolean playStyle;
     private BackgroundSound backgroundSound;
+
+   // private FusedLocationProviderClient fusedLocationClient;
+   // private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+    private double lat;
+    private double lon;
 
 
     @Override
@@ -33,6 +39,9 @@ public class GameMenu extends AppCompatActivity {
         setContentView(R.layout.activity_game_menu);
 
         findViews();
+        initViews();
+    }
+    public void initViews(){
         game_menu_btn_Slow.setOnClickListener(v -> {speedBtnClicked(false);});
         game_menu_btn_Fast.setOnClickListener(v -> {speedBtnClicked(true);});
         game_menu_btn_Sensor.setOnClickListener(v -> {playStyleBtnClicked(true);});
@@ -77,7 +86,9 @@ public class GameMenu extends AppCompatActivity {
     }
 
     private void startScoreBoardActivity() {
-        //TODO
+        Intent intent = new Intent(this, ScoreBoardActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private void startGameActivity() {
@@ -87,6 +98,10 @@ public class GameMenu extends AppCompatActivity {
             //Put Data into the JSON object
             gameSetupValues.put("speed", speed);
             gameSetupValues.put("playStyle", playStyle);
+            //gameSetupValues.put("lat", lat);
+            //gameSetupValues.put("lon", lon);
+
+
         }catch (JSONException e) {
             e.printStackTrace();
         }

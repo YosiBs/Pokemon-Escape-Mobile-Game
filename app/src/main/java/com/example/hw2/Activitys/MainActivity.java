@@ -22,13 +22,17 @@ import android.widget.Toast;
 import com.example.hw2.Interfaces.CallBack_CharacterMovement;
 import com.example.hw2.Interfaces.CallBack_GameSpeed;
 import com.example.hw2.Logic.GameManager;
-import com.example.hw2.Models.Obstacle;
+import com.example.hw2.Model.Obstacle;
+import com.example.hw2.Model.Player;
+import com.example.hw2.Model.PlayerList;
 import com.example.hw2.R;
 import com.example.hw2.Utilities.BackgroundSound;
 import com.example.hw2.Utilities.SensorMovement;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
+import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -58,10 +62,12 @@ public class MainActivity extends AppCompatActivity {
     private AppCompatEditText main_ET_player_name;
     private boolean isGameRunning = true;
     private boolean isGameOver = false;
+    private final int ODOMETER_VALUE = 1;
+    private MaterialButton main_btn_submit;
+
     // Sensors:
     private SensorMovement stepSensorsManager;
     private SensorMovement speedSensorsManager;
-    private final int ODOMETER_VALUE = 1;
 
     // Sounds:
     private BackgroundSound backgroundSound;
@@ -79,9 +85,12 @@ public class MainActivity extends AppCompatActivity {
         adjustGameMode();
         this.gm = new GameManager();
         gameMat = getAllRelativeLayouts();
-        main_btn_left.setOnClickListener(v -> moveLeft());
-        main_btn_right.setOnClickListener(v -> moveRight());
+        initViews();
         initSounds();
+        Log.d("bbb", "25");
+
+        //PlayerList playerList = PlayerList.getInstance();
+        Log.d("bbb", "26");
         startGameLoop();
     }
 
@@ -118,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
             }
             startGameLoop();
         }
+    }
+    public void initViews(){
+        main_btn_left.setOnClickListener(v -> moveLeft());
+        main_btn_right.setOnClickListener(v -> moveRight());
+        main_btn_submit.setOnClickListener(v -> startScoreBoardActivity());
     }
 
     private void initSounds(){
@@ -180,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
         main_cardview_gameover = findViewById(R.id.main_cardview_gameover);
         main_card_lbl_score = findViewById(R.id.main_card_lbl_score);
         main_ET_player_name = findViewById(R.id.main_ET_player_name);
+        main_btn_submit = findViewById(R.id.main_btn_submit);
 
     }
 
@@ -195,6 +210,9 @@ public class MainActivity extends AppCompatActivity {
                 // Get data from the JSON object
                 this.speed = gameSetupValues.getBoolean("speed");
                 this.useStepSensor = gameSetupValues.getBoolean("playStyle");
+                // TODO:
+                //lat
+                //lon
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -337,7 +355,6 @@ public class MainActivity extends AppCompatActivity {
     private void ObstacleViewMovement() {
         for(Obstacle obs : gm.getObstacleList()){
             int nextRow = obs.getPosY() + 1;
-            Log.d("aaa", "from row "+ obs.getPosY() +" to row " + nextRow +" on lane " + obs.getPosX());
             nextRowHandler(obs.getPosY(), nextRow, obs.getPosX(), obs, (nextRow < gm.getNumberOfRows()) ? false : true);
         }
         int collidedObsIndex = gm.isCollisionAccured();
@@ -350,7 +367,6 @@ public class MainActivity extends AppCompatActivity {
 
         Obstacle currObstacle = gm.getObstacleList().get(i);
         if(currObstacle.isDoingDamage()){ // Crash
-            Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             loseALife();
             vibrationEffect();
             createToast("Oops");
@@ -358,14 +374,13 @@ public class MainActivity extends AppCompatActivity {
                 gameOver();
             }
         }else{ // COIN COLLECT
-            Log.d("bbb", "from changeUI : lifes : " + gm.getNumberOfLifes() + " type: " + currObstacle.isDoingDamage());
             receivePoints();
             removeCoin(currObstacle);
-            makeCoinCollectingSound();
+            CoinCollectSound();
         }
     }
 
-    private void makeCoinCollectingSound() {
+    private void CoinCollectSound() {
         int random = gm.generateRandomNumber(2);
         mpCoinSound[random].start();
     }
@@ -395,18 +410,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void gameOver() {
-        Log.d("bbb", "GAME OVER");
         isGameRunning = false;
         isGameOver = true;
         showEndGameCard(true);
         mpGameOverSound.start();
-
-
         main_btn_right.setVisibility(View.INVISIBLE);
         main_btn_left.setVisibility(View.INVISIBLE);
-
         main_card_lbl_score.setText("Final Score: " + gm.getScore());
-
     }
 
     private void showEndGameCard(boolean isVisible) {
@@ -428,19 +438,46 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void saveScore(){
-        // TODO:
-        // 1. save the score to the game manager
-        // in game manager create a sorted array and show only the top 10 scores and players
+    public void savePlayer(){
+        Log.d("bbb", "10");
 
         if(main_ET_player_name.length() == 0){
-            createToast("Please Add Your Name");
+            Log.d("bbb", "11");
+            createToast("Please Add Name");
         }else{
-
+            Player player = new Player().
+                    setName(main_ET_player_name.getText().toString())
+                    .setScore(gm.getScore());
+            //add lat lon
+            Log.d("bbb", "1");
+            PlayerList.getInstance().addPlayer(player);
+            Log.d("bbb", "2");
+            PlayerList.getInstance().sortByScore();
+            Log.d("bbb", "3");
         }
-
     }
-    public void goToScoreBoardActivity(){
-        // TODO:
+
+    public Intent savePlayerListToJson(){
+        Gson gson = new Gson();
+        Log.d("bbb", "12");
+        String playerListJson = gson.toJson(PlayerList.getInstance().getPlayerList());
+        Log.d("bbb", "13");
+
+        Intent intent = new Intent(this, ScoreBoardActivity.class);
+        Log.d("bbb", "14");
+        intent.putExtra("playerListJson", playerListJson);
+        Log.d("bbb", "15");
+        return intent;
+    }
+
+    public void startScoreBoardActivity(){
+        savePlayer();
+        Log.d("bbb", "8");
+        Intent intent = savePlayerListToJson();
+        Log.d("bbb", "9");
+
+        startActivity(intent);
+
+        finish();
     }
 }
