@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,12 +29,9 @@ public class FragmentScore extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_score, container, false);
 
-        fragment_BTN_score.setOnClickListener(v -> {
+        findViews(view);
 
-            int i = 0;
-            itemClicked(32.1129923 + i, 34.8182147 + i);
-            i++;
-        });
+        fragment_BTN_score.setOnClickListener(v -> itemClicked(32.1129923, 34.8182147));
 
         return view;
     }

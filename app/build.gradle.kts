@@ -38,6 +38,10 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     //GSON:
     implementation ("com.google.code.gson:gson:2.10.1")
+    //GLIDE:
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    //lottie
+    implementation ("com.airbnb.android:lottie:6.4.0")
 
 
 }

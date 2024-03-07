@@ -3,6 +3,7 @@ package com.example.hw2.Activitys;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.FrameLayout;
 
 import com.example.hw2.Interfaces.CallBack_ConnectLocationToPlayer;
@@ -41,9 +42,10 @@ public class ScoreBoardActivity extends AppCompatActivity {
             }
         });
         fragmentMap = new FragmentMap();
-
+        Log.d("rrr","befor getSupportFragmentManager");
         getSupportFragmentManager().beginTransaction().add(R.id.score_board_FRAME_list, fragmentScore).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.score_board_FRAME_map, fragmentMap).commit();
+        Log.d("rrr","after getSupportFragmentManager");
     }
 
     private void findViews() {
