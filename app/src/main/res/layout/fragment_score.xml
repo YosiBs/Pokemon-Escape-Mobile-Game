@@ -3,20 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/yellow_400_Dark"
+    android:background="@drawable/blue_and_yellow_background"
     tools:context=".View.FragmentScore">
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/fragment_BTN_score"
-        android:layout_width="200dp"
-        android:layout_height="120dp"
-        android:text=""
-        android:background="@drawable/pokemon_logo"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        >
 
-    </androidx.appcompat.widget.AppCompatButton>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/main_LST_scores"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        tools:listitem="@layout/horizontal_score_item"
+        />
 
 </RelativeLayout>

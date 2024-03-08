@@ -44,7 +44,7 @@ public class FragmentScore extends Fragment {
     }
 
     public void findViews(View view){
-        fragment_BTN_score = view.findViewById(R.id.fragment_BTN_score);
+        //fragment_BTN_score = view.findViewById(R.id.fragment_BTN_score);
     }
 
 
