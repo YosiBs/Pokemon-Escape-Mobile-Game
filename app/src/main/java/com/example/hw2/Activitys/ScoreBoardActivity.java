@@ -26,6 +26,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
     private FragmentMap fragmentMap;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         fragmentScore.setCallBackConnectLocationToPlayer(new CallBack_ConnectLocationToPlayer() {
             @Override
             public void scoreBoxClicked(double lat, double lon) {
-                fragmentMap.changeText(lat, lon);
+                fragmentMap.moveToLocation(lat, lon);
             }
         });
         fragmentMap = new FragmentMap();

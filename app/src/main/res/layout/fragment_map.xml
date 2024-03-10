@@ -6,19 +6,11 @@
     android:background="@color/move_button_color"
     tools:context=".View.FragmentMap">
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/fragment_MTV_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="GG"
-        android:textStyle="bold"
-        android:textSize="60sp"
-        >
-
-    </com.google.android.material.textview.MaterialTextView>
-
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/maps"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.google.android.gms.maps.SupportMapFragment"/>
 
 
 </RelativeLayout>
