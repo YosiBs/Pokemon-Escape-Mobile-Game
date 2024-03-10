@@ -2,13 +2,17 @@ package com.example.hw2.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 
+import android.Manifest;
 import com.example.hw2.Model.Player;
 import com.example.hw2.Model.PlayerList;
 import com.example.hw2.R;
@@ -19,6 +23,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 public class GameMenu extends AppCompatActivity {
 
@@ -38,12 +46,15 @@ public class GameMenu extends AppCompatActivity {
     private double lat;
     private double lon;
 
+    private FusedLocationProviderClient fusedLocationClient;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_menu);
-
+        getLocationPermissionFromUser();
         findViews();
         initViews();
     }
@@ -127,6 +138,29 @@ public class GameMenu extends AppCompatActivity {
         game_menu_btn_scoreboard = findViewById(R.id.game_menu_btn_scoreboard);
     }
 
+    private void getLocationPermissionFromUser() {
+        this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted, request the permission
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
+        }else{
+
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                // Got last known location. In some rare situations, this can be null.
+                                lat = location.getLatitude();
+                                lon = location.getLongitude();
+
+                                //Log.d("lat and lon", "lat" + lat + "lon" + lon);
+                            }
+                        }
+                    });
+        }
+
+    }
 
 
 }
