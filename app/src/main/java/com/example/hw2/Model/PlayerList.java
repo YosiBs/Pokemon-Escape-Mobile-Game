@@ -12,22 +12,18 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class PlayerList {
     private ArrayList<Player> playerList = new ArrayList<>();
     private static  PlayerList instance = null;
     public static final String PLAYER_LIST ="PLAYER_LIST";
-
-
-
     public PlayerList() {
-
         this.playerList = loadFromSharedPreferences();
         if(playerList == null) {
             this.playerList = new ArrayList<Player>();
         }
     }
-
     public ArrayList<Player> getPlayerList() {
         return playerList;
     }
@@ -36,27 +32,21 @@ public class PlayerList {
             instance = new PlayerList();
         return instance;
     }
-
     public PlayerList setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
         return this;
     }
-
     public void addPlayer(Player player) {
         this.playerList.add(player);
         Log.d("bbb", "4");
         saveToSharedPreferences();
         Log.d("bbb", "5");
-
     }
     private void saveToSharedPreferences() {
         Gson gson = new Gson();
         String playerListJson = gson.toJson(this.playerList);
-        Log.d("rrr", playerListJson);
-
         SharedPreferencesManager.getInstance().putString(PLAYER_LIST, playerListJson);
     }
-
     public ArrayList<Player> loadFromSharedPreferences(){
         String playersJson = SharedPreferencesManager.getInstance().getString(PLAYER_LIST, "");
         Log.d("rrr", playersJson);
@@ -64,14 +54,12 @@ public class PlayerList {
         Type type = new TypeToken<ArrayList<Player>>(){}.getType();
         return gson.fromJson(playersJson, type);
     }
-
     @Override
     public String toString() {
         return "PlayerList{" +
                 "playerArrayList=" + playerList +
                 '}';
     }
-
     public void sortByScore() {
         // Sort the players list based on their scores
         Collections.sort(playerList, new Comparator<Player>() {
@@ -81,5 +69,11 @@ public class PlayerList {
                 return Integer.compare(p2.getScore(), p1.getScore());
             }
         });
+    }
+
+    public static ArrayList<Player> getCopyOfBestPlayers(){
+        ArrayList<Player> allPlayers = PlayerList.getInstance().getPlayerList();
+        ArrayList<Player> bestPlayerList = new ArrayList<>(allPlayers.subList(0,Math.min(10, allPlayers.size())));
+        return bestPlayerList;
     }
 }

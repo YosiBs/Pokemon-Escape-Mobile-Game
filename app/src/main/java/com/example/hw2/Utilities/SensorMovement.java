@@ -48,7 +48,6 @@ public class SensorMovement {
                 // pass
             }
         };
-
     }
 
     private void initEventListenerMovement() {
@@ -120,5 +119,4 @@ public class SensorMovement {
                 speedSensor
         );
     }
-
 }

@@ -21,7 +21,6 @@ public class BackgroundSound {
         this.context = context;
         this.executor = Executors.newSingleThreadExecutor();
         this.handler = new Handler(Looper.getMainLooper());
-
     }
 
     public void playSound(int stage){
@@ -46,9 +45,6 @@ public class BackgroundSound {
                 mp.release();
                 mp = null;
             });
-
         }
     }
-
-
 }

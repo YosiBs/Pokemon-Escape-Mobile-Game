@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class ScoreBoardActivity extends AppCompatActivity {
@@ -33,9 +34,7 @@ public class ScoreBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_score_board);
         findViews();
-        ArrayList<Player> playerList = getPlayerListData();
-
-
+        List<Player> playerList = getPlayerListData();
         fragmentScore = new FragmentScore();
         fragmentScore.setCallBackConnectLocationToPlayer(new CallBack_ConnectLocationToPlayer() {
             @Override
@@ -44,10 +43,8 @@ public class ScoreBoardActivity extends AppCompatActivity {
             }
         });
         fragmentMap = new FragmentMap();
-        Log.d("rrr","befor getSupportFragmentManager");
         getSupportFragmentManager().beginTransaction().add(R.id.score_board_FRAME_list, fragmentScore).commit();
         getSupportFragmentManager().beginTransaction().add(R.id.score_board_FRAME_map, fragmentMap).commit();
-        Log.d("rrr","after getSupportFragmentManager");
     }
 
     private void findViews() {
@@ -55,10 +52,11 @@ public class ScoreBoardActivity extends AppCompatActivity {
         score_board_FRAME_map = findViewById(R.id.score_board_FRAME_map);
     }
 
-    private ArrayList<Player> getPlayerListData() {
+    private List<Player> getPlayerListData() {
         String playerListJson = getIntent().getStringExtra("playerListJson");
         Gson gson = new Gson();
-        return gson.fromJson(playerListJson, new TypeToken<ArrayList<Player>>(){}.getType());
+        List<Player> bestPlayers = gson.fromJson(playerListJson, new TypeToken<List<Player>>(){}.getType());
+        return bestPlayers;
     }
 
 

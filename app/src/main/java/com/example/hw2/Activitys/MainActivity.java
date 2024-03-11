@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
 
     private boolean speed = false;
     private boolean useStepSensor = false;
-    //private MaterialTextView main_MTV_chosen_speed;
+    private double lat;
+    private double lng;
     private GameManager gm;
     private FloatingActionButton main_btn_left;
     private FloatingActionButton main_btn_right;
@@ -87,10 +88,8 @@ public class MainActivity extends AppCompatActivity {
         gameMat = getAllRelativeLayouts();
         initViews();
         initSounds();
-        Log.d("bbb", "25");
 
         //PlayerList playerList = PlayerList.getInstance();
-        Log.d("bbb", "26");
         startGameLoop();
     }
 
@@ -210,27 +209,23 @@ public class MainActivity extends AppCompatActivity {
                 // Get data from the JSON object
                 this.speed = gameSetupValues.getBoolean("speed");
                 this.useStepSensor = gameSetupValues.getBoolean("playStyle");
-                // TODO:
-                //lat
-                //lon
+                this.lat = gameSetupValues.getDouble("lat");
+                this.lng = gameSetupValues.getDouble("lng");
+                Log.d("rrr", "adjustGameMode- lat: "+ lat +"lng: "+lng);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("ccc", speed + " " + useStepSensor);
         loopInterval = speed ? FAST_VALUE : SLOW_VALUE;
 
         //Sensor to control the speed of the obstacle coming down:
         activateSpeedSensors();
-
-
-        if(useStepSensor){ //Activate Sensors if the user chose this option:
+        if(useStepSensor){ //Activate Step Sensors if the user chose this option:
             main_btn_right.setVisibility(View.INVISIBLE);
             main_btn_left.setVisibility(View.INVISIBLE);
             activateMovementSensors();
-
         }
-
     }
     private void activateSpeedSensors() {
         speedSensorsManager = new SensorMovement(this, new CallBack_GameSpeed() {
@@ -443,8 +438,11 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Player player = new Player().
                     setName(main_ET_player_name.getText().toString())
-                    .setScore(gm.getScore());
-            //TODO: add lat lon
+                    .setScore(gm.getScore())
+                    .setLat(lat)
+                    .setLng(lng);
+
+            Log.d("rrr", "MainActivity- lat: "+ lat +"lng: "+lng);
             PlayerList.getInstance().addPlayer(player);
             PlayerList.getInstance().sortByScore();
             return true;

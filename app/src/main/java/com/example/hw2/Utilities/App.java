@@ -9,5 +9,4 @@ public class App extends Application {
         super.onCreate();
         SharedPreferencesManager.init(getApplicationContext());
     }
-
 }

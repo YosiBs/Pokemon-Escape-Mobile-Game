@@ -19,76 +19,56 @@ public class GameManager {
     private ArrayList<Obstacle> obstacleList;
     private final int MAX_OBSTACLES = 10;
 
-
-
-
-
     public int getCoinValue() {
         return coinValue;
     }
-
     public void setCoinValue(int coinValue) {
         this.coinValue = coinValue;
     }
-
     public GameManager(){
         this.numberOfLifes = LIFES_PER_GAME;
         mainCharacter = new MainCharacter();
         obstacleList = new ArrayList<>();
     }
-
     public int getNumberOfLifes() {
         return numberOfLifes;
     }
-
     public int getBumpCounter() {
         return bumpCounter;
     }
-
     public int getNumberOfRows() {
         return NUMBER_OF_ROWS;
     }
-
     public int getNumberOfCols() {
         return NUMBER_OF_COLS;
     }
-
     public int getScore() {
         return score;
     }
-
     public MainCharacter getMainCharacter() {
         return mainCharacter;
     }
-
     public ArrayList<Obstacle> getObstacleList() {
         return obstacleList;
     }
-
     public int getMaxObstaclesOnScreen() {
         return MAX_OBSTACLES;
     }
-
     public void setNumberOfLifes(int numberOfLifes) {
         this.numberOfLifes = numberOfLifes;
     }
-
     public void setBumpCounter(int bumpCounter) {
         this.bumpCounter = bumpCounter;
     }
-
     public void setScore(int score) {
         this.score = score;
     }
-
     public void setObstacleList(ArrayList<Obstacle> obstacleList) {
         this.obstacleList = obstacleList;
     }
-
     public int getLifesPerGame(){
         return LIFES_PER_GAME;
     }
-
     public int isCollisionAccured(){
         for(Obstacle obs : obstacleList){
             if(mainCharacter.getPosX() == obs.getPosX() && mainCharacter.getPosY() == obs.getPosY()){
@@ -101,7 +81,6 @@ public class GameManager {
         }
         return -1;
     }
-
     public int generateRandomNumber(int max) {
         Random random = new Random();
         int randomNumber = random.nextInt(max);
@@ -112,7 +91,4 @@ public class GameManager {
             this.obstacleList.add(obs);
         }
     }
-
-
 }
-

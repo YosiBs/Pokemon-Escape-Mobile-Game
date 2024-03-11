@@ -11,24 +11,16 @@ public class SharedPreferencesManager {
     private static volatile SharedPreferencesManager instance = null;
 
     private SharedPreferencesManager(Context context) {
-        Log.d("bbb", "18");
-
         this.sharedPref = context.getApplicationContext().getSharedPreferences(DB_FILE, Context.MODE_PRIVATE);
-        Log.d("bbb", "19");
     }
 
     public static void init(Context context) {
-        Log.d("bbb", "27");
-
         if (instance == null) {
             instance = new SharedPreferencesManager(context);
         }
     }
 
     public static SharedPreferencesManager getInstance() {
-        Log.d("bbb", "20");
-
-
         return instance;
     }
     public void putInt( String key, int value){
@@ -42,19 +34,11 @@ public class SharedPreferencesManager {
     }
 
     public void putString( String key, String value){
-        Log.d("bbb", "22");
-
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(key, value);
         editor.apply();
     }
     public String getString( String key, String defaultValue){
-        Log.d("bbb", "21");
-
         return sharedPref.getString(key, defaultValue);
     }
-
-
-
-
 }

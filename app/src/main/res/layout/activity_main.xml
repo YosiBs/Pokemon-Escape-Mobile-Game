@@ -5,10 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Activitys.MainActivity"
-    android:background="@drawable/pokemon_road_background">
-
-
-
+    android:background="@drawable/gameplay_background">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -529,12 +526,8 @@
 
                 </com.google.android.material.button.MaterialButton>
 
-
-
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-
     </androidx.cardview.widget.CardView>
-
 
 </RelativeLayout>

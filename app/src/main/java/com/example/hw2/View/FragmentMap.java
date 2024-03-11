@@ -20,10 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 
 public class FragmentMap extends Fragment {
-
-    // private MaterialTextView fragment_MTV_map;
-
-
     private GoogleMap gMap;
     public FragmentMap(){
     }
@@ -31,23 +27,21 @@ public class FragmentMap extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_map, container, false);
         SupportMapFragment supportMapFragment = ((SupportMapFragment)getChildFragmentManager().findFragmentById(R.id.maps));
         supportMapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull GoogleMap googleMap) {
                 gMap = googleMap;
-                LatLng location = new LatLng(40.7128, 74.0060);
+                LatLng location = new LatLng(55.6761, 12.5683);
                 googleMap.addMarker(new MarkerOptions().position(location).title("New York"));
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,15));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location,11));
             }
         });
         return view;
     }
 
-
-    public void moveToLocation(double lat, double lon) { //zoom
+    public void moveToLocation(double lat, double lon) {
         reDirectCamera(lat, lon);
     }
 
@@ -58,12 +52,9 @@ public class FragmentMap extends Fragment {
             gMap.addMarker(new MarkerOptions().position(location).title("New Location"));
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(lat, lon))
-                    .zoom(15)
+                    .zoom(11)
                     .build();
             gMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
         }
     }
-
-
 }

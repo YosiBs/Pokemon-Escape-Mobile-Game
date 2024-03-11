@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,13 +22,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 public class GameMenu extends AppCompatActivity {
-
     private AppCompatButton game_menu_btn_Slow;
     private AppCompatButton game_menu_btn_Fast;
     private AppCompatButton game_menu_btn_play_game;
@@ -41,10 +40,8 @@ public class GameMenu extends AppCompatActivity {
     private boolean playStyle;
     private BackgroundSound backgroundSound;
 
-   // private FusedLocationProviderClient fusedLocationClient;
-   // private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
     private double lat;
-    private double lon;
+    private double lng;
 
     private FusedLocationProviderClient fusedLocationClient;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1001;
@@ -103,9 +100,13 @@ public class GameMenu extends AppCompatActivity {
     }
 
     private void startScoreBoardActivity() {
-        ArrayList<Player> playerList = PlayerList.getInstance().getPlayerList();
+        ArrayList<Player> playerList = PlayerList.getInstance().getPlayerList();;
+
+        List<Player> bestPlayerList = playerList.subList(0,Math.min(9, playerList.size()));
+        Log.d("rrr", "top 10 : " + bestPlayerList.toString());
+
         Gson gson = new Gson();
-        String playerListJson = gson.toJson(playerList);
+        String playerListJson = gson.toJson(bestPlayerList);
         Intent intent = new Intent(this, ScoreBoardActivity.class);
         intent.putExtra("playerListJson", playerListJson);
         startActivity(intent);
@@ -117,8 +118,10 @@ public class GameMenu extends AppCompatActivity {
         try{
             gameSetupValues.put("speed", speed);
             gameSetupValues.put("playStyle", playStyle);
-            //gameSetupValues.put("lat", lat);
-            //gameSetupValues.put("lon", lon);
+            gameSetupValues.put("lat", lat);
+            gameSetupValues.put("lng", lng);
+            Log.d("rrr", "startGameActivity: lat" + lat + "lng" + lng);
+
         }catch (JSONException e) {
             e.printStackTrace();
         }
@@ -141,9 +144,12 @@ public class GameMenu extends AppCompatActivity {
     private void getLocationPermissionFromUser() {
         this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Log.d("rrr", "getLocationPermissionFromUser() - if");
+
             // Permission is not granted, request the permission
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_REQUEST_CODE);
         }else{
+            Log.d("rrr", "getLocationPermissionFromUser() - else");
 
             fusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -152,9 +158,9 @@ public class GameMenu extends AppCompatActivity {
                             if (location != null) {
                                 // Got last known location. In some rare situations, this can be null.
                                 lat = location.getLatitude();
-                                lon = location.getLongitude();
+                                lng = location.getLongitude();
 
-                                //Log.d("lat and lon", "lat" + lat + "lon" + lon);
+                                Log.d("rrr", "lat" + lat + "lng" + lng);
                             }
                         }
                     });

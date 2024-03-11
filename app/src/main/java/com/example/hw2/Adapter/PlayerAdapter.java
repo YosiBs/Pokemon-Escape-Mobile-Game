@@ -76,7 +76,13 @@ public class PlayerAdapter extends RecyclerView.Adapter<PlayerAdapter.PlayerView
             player_LBL_name = itemView.findViewById(R.id.player_LBL_name);
             player_LBL_score = itemView.findViewById(R.id.player_LBL_score);
             player_IMG_location = itemView.findViewById(R.id.player_IMG_location);
+            player_IMG_location.setOnClickListener(v -> {
 
+                if(playerCallback!=null){
+                    playerCallback.locationButtonClicked(getItem(getAdapterPosition()),getAdapterPosition());
+                }
+
+            });
 
         }
 

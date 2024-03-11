@@ -22,9 +22,7 @@ import com.google.android.material.textview.MaterialTextView;
 
 public class FragmentScore extends Fragment {
 
-    private AppCompatButton fragment_BTN_score;
     private CallBack_ConnectLocationToPlayer callBackConnectLocationToPlayer;
-
     private RecyclerView main_LST_scores;
 
     public FragmentScore(){
@@ -33,23 +31,18 @@ public class FragmentScore extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_score, container, false);
-
         findViews(view);
         initViews();
-        //fragment_BTN_score.setOnClickListener(v -> itemClicked(32.1129923, 34.8182147));
-
         return view;
     }
 
     private void initViews() {
-        PlayerAdapter playerAdapter = new PlayerAdapter(this.getContext(), PlayerList.getInstance().getPlayerList());
+        PlayerAdapter playerAdapter = new PlayerAdapter(this.getContext(), PlayerList.getCopyOfBestPlayers());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.getContext());
         linearLayoutManager.setOrientation(RecyclerView.VERTICAL);
         main_LST_scores.setLayoutManager(linearLayoutManager);
         main_LST_scores.setAdapter(playerAdapter);
-
         playerAdapter.setPlayerCallback(new CallBack_Player() {
             @Override
             public void locationButtonClicked(Player player, int position) {
@@ -62,17 +55,12 @@ public class FragmentScore extends Fragment {
         if(callBackConnectLocationToPlayer != null){
             callBackConnectLocationToPlayer.scoreBoxClicked(lat, lon);
         }
-
     }
-
     public void findViews(View view){
         main_LST_scores = view.findViewById(R.id.main_LST_scores);
     }
 
-
     public void setCallBackConnectLocationToPlayer(CallBack_ConnectLocationToPlayer callBackConnectLocationToPlayer){
         this.callBackConnectLocationToPlayer = callBackConnectLocationToPlayer;
     }
-
-
 }
